@@ -112,7 +112,7 @@ function initDynamicDates() {
 
   const now = new Date();
   let targetDate = new Date();
-  
+
   const dayOfWeek = now.getDay();
   let daysUntilTarget = (6 - dayOfWeek + 7) % 7;
   if (daysUntilTarget === 0) daysUntilTarget = 1;
@@ -220,7 +220,7 @@ function initMobileMenu() {
     drawer.classList.toggle('open');
     const isOpen = drawer.classList.contains('open');
     toggleBtn.setAttribute('aria-expanded', isOpen);
-    toggleBtn.innerHTML = isOpen 
+    toggleBtn.innerHTML = isOpen
       ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>`
       : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`;
   });
@@ -616,7 +616,7 @@ function initButtonRipple() {
   const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
 
   buttons.forEach(btn => {
-    btn.addEventListener('click', function(e) {
+    btn.addEventListener('click', function (e) {
       const circle = document.createElement('span');
       const diameter = Math.max(btn.clientWidth, btn.clientHeight);
       const radius = diameter / 2;
@@ -652,9 +652,9 @@ function initPillarStationedBalloons() {
     const handleVideoActive = () => video.classList.add('is-active');
     video.addEventListener('playing', handleVideoActive);
     video.addEventListener('canplay', () => {
-      video.play().then(handleVideoActive).catch(() => {});
+      video.play().then(handleVideoActive).catch(() => { });
     });
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   }
 
   const cards = document.querySelectorAll('.ecosystem-hub-card');
