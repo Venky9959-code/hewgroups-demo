@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog & Insights | HEW Groups — Practical Advice for Life & Growth</title>
+  <meta name="description"
+    content="Explore simple, practical articles on health routines, in-demand digital skills, and extra income streams by HEW Groups and Lead Coach Sreenivas Paturi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo/HEW Groups - FINAL.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="HEW Groups Home">
+        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-title">HEW <span>GROUPS</span></span>
+          <span class="brand-subtitle">Health · Education · Wealth</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="blog.html" class="nav-link active">Blog</a></li>
+          <li><a href="mentor.html" class="nav-link">Mentor</a></li>
+          <li><a href="testimonials.html" class="nav-link">Testimonials</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Button & Mobile Toggle -->
+      <div class="nav-actions">
+        <button class="btn-primary trigger-booking-modal" data-context="Blog Page Header CTA">
+          Reserve My Seat
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" aria-label="Mobile Navigation Menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About Us</a>
+    <a href="blog.html" class="nav-link active">Blog</a>
+    <a href="mentor.html" class="nav-link">Mentor</a>
+    <a href="testimonials.html" class="nav-link">Testimonials</a>
+    <button class="btn-primary trigger-booking-modal" style="width: 100%; margin-top: 1rem;">
+      Reserve Free Seat — Batch #1
+    </button>
+  </div>
+
+  <main>
+    <!-- Subpage Hero -->
+    <section class="page-hero">
+      <div class="ambient-glow-sphere glow-gold" style="top:-10%; left:20%;"></div>
+      <div class="ambient-glow-sphere glow-cyan" style="top:15%; right:15%;"></div>
+      <div class="container reveal">
+
+        <h1 class="page-hero-title">
+          Practical Guides for <span class="text-gradient-hew">Everyday Success</span>
+        </h1>
+        <p class="page-hero-desc">
+          Honest, simple advice on improving your daily energy, learning valuable digital skills, and building multiple
+          income streams.
+        </p>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section-padding">
+      <div class="container">
+
+        <!-- Category Filter Buttons -->
+        <div class="blog-filters reveal">
+          <button class="filter-btn active" data-filter="all">All Topics</button>
+          <button class="filter-btn" data-filter="health">Health &amp; Energy</button>
+          <button class="filter-btn" data-filter="education">Skills &amp; AI</button>
+          <button class="filter-btn" data-filter="wealth">Wealth &amp; Income</button>
+        </div>
+
+        <!-- Blog Cards Grid -->
+        <div class="blog-grid stagger-items">
+
+          <!-- Article 1: Health -->
+          <article class="blog-card reveal" data-category="health">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--health);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-health">Health</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By Coach Sreenivas Paturi</span> · <span>5 min read</span>
+              </div>
+              <h2 class="blog-card-title">3 Simple Sleep Habits That Double Your Daily Energy</h2>
+              <p class="blog-card-desc">
+                Feeling tired by 2:00 PM is not normal. Learn how simple tweaks to evening screen time and morning light
+                can give you high stamina all day long.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 1">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 2: Education -->
+          <article class="blog-card reveal" data-category="education">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--education);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-education">Education</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By Coach Sreenivas Paturi</span> · <span>7 min read</span>
+              </div>
+              <h2 class="blog-card-title">How to Use AI Tools to Save 15 Hours Every Single Week</h2>
+              <p class="blog-card-desc">
+                You do not need to be a software programmer to benefit from AI. Here are 3 everyday tools that write
+                emails, draft plans, and speed up client work.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 2">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 3: Wealth -->
+          <article class="blog-card reveal" data-category="wealth">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--wealth);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-wealth">Wealth</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By Coach Sreenivas Paturi</span> · <span>6 min read</span>
+              </div>
+              <h2 class="blog-card-title">The Single-Paycheck Trap &amp; How to Build Stream #2</h2>
+              <p class="blog-card-desc">
+                Relying on one salary leaves you vulnerable. Here is the step-by-step method our students use to package
+                existing skills into a second monthly income.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 3">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 4: Education / Personal Brand -->
+          <article class="blog-card reveal" data-category="education">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--education);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-education">Education</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By HEW Editorial Team</span> · <span>4 min read</span>
+              </div>
+              <h2 class="blog-card-title">Building a Professional Social Media Audience in 2026</h2>
+              <p class="blog-card-desc">
+                Stop chasing viral trends. Sharing honest lessons and helpful tips consistently builds trust, attracts
+                clients, and creates true career security.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 4">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 5: Health & Stress -->
+          <article class="blog-card reveal" data-category="health">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--health);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                  <line x1="6" y1="1" x2="6" y2="4" />
+                  <line x1="10" y1="1" x2="10" y2="4" />
+                  <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-health">Health</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By HEW Editorial Team</span> · <span>5 min read</span>
+              </div>
+              <h2 class="blog-card-title">Stress-Proof Workdays: How to Stay Calm Under Pressure</h2>
+              <p class="blog-card-desc">
+                High-pressure jobs often lead to burnout. Discover simple 2-minute breathing exercises and walking
+                breaks that reset your nervous system.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 5">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 6: Wealth & Savings -->
+          <article class="blog-card reveal" data-category="wealth">
+            <div class="blog-card-image">
+              <div class="blog-icon-emblem" style="color: var(--wealth);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                  <path d="M12 18V6" />
+                </svg>
+              </div>
+              <span class="blog-category-badge cat-wealth">Wealth</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-date-meta">
+                <span>By Coach Sreenivas Paturi</span> · <span>8 min read</span>
+              </div>
+              <h2 class="blog-card-title">Smart Money Rules: How to Save and Invest Without Risk</h2>
+              <p class="blog-card-desc">
+                You do not have to gamble on risky investments to grow wealthy. Learn the steady compounding principles
+                that protect your capital and grow it steadily.
+              </p>
+              <a href="#booking-modal" class="blog-read-link trigger-booking-modal" data-context="Blog Read Article 6">
+                Read Full Guide
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Masterclass Call to Action -->
+        <div style="text-align: center; margin-top: 4.5rem;" class="reveal">
+          <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.25rem;">
+            Want live personalized guidance directly from Coach Sreenivas?
+          </p>
+          <button class="btn-primary trigger-booking-modal" data-context="Blog Bottom CTA" style="min-width: 280px;">
+            Claim Free Seat now
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+            <div class="brand-text">
+              <span class="brand-title">HEW <span>GROUPS</span></span>
+              <span class="brand-subtitle">Health · Education · Wealth</span>
+            </div>
+          </a>
+          <p>
+            HEW Groups helps ambitious individuals build a healthier body, high-demand digital skills, and sustainable
+            wealth independence.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>LEGAL &amp; POLICIES</h4>
+          <ul class="footer-links">
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disclaimer-box">
+          HEW Groups is an educational and mentorship organization. We provide practical guidance across physical
+          wellness, in-demand skills, and wealth systems. Results vary depending on personal effort and execution.
+        </div>
+        <div class="copyright-box">
+          © 2026 HEW Groups. All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       INTERACTIVE BOOKING & TICKET MODAL
+       ======================================================================== -->
+  <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-container">
+      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <div id="modal-body-content">
+        <!-- Rendered dynamically via js/main.js -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Lightweight category filter logic for Blog
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.blog-card').forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

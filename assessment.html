@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive HEW Score Assessment | Health, Education, Wealth Calculator</title>
+  <meta name="description"
+    content="Calculate your HEW Score across Health, Education, and Wealth to see what is holding you back and get simple next steps to grow.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo/HEW Groups - FINAL.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="top">
+
+  <!-- Top Announcement Bar -->
+  <aside class="announcement-strip" aria-label="Masterclass Notification">
+    <div class="container announcement-content">
+      <div class="announcement-badge">
+        <span class="live-dot"></span> LIVE MASTERCLASS
+      </div>
+      <p class="announcement-text">
+        Join HEW Groups Batch #1 on <strong class="dynamic-session-date">Saturday</strong> at <strong>7:00 PM
+          IST</strong> · Limited to 100 Seats
+      </p>
+      <button class="announcement-btn trigger-booking-modal" data-context="Assessment Announcement">
+        Claim seat now
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="HEW Groups Home">
+        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-title">HEW <span>GROUPS</span></span>
+          <span class="brand-subtitle">Health · Education · Wealth</span>
+        </div>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="mentor.html" class="nav-link">Mentor</a></li>
+          <li><a href="testimonials.html" class="nav-link">Testimonials</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-primary trigger-booking-modal" data-context="Assessment Header">
+          Reserve My Seat
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" aria-label="Mobile Navigation Menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About Us</a>
+    <a href="blog.html" class="nav-link">Blog</a>
+    <a href="mentor.html" class="nav-link">Mentor</a>
+    <a href="testimonials.html" class="nav-link">Testimonials</a>
+    <button class="btn-primary trigger-booking-modal" style="width: 100%; margin-top: 1rem;">
+      Reserve Free Seat — Batch #1
+    </button>
+  </div>
+
+  <main>
+    <!-- Subpage Hero -->
+    <section class="page-hero">
+      <div class="ambient-glow-sphere glow-emerald" style="top:-10%; right:20%;"></div>
+      <div class="ambient-glow-sphere glow-cyan" style="top:15%; left:15%;"></div>
+      <div class="container reveal">
+
+        <h1 class="page-hero-title">
+          Interactive <span style="color: var(--primary);">HEW Score</span> Calculator
+        </h1>
+        <p class="page-hero-desc">
+          Move the simple sliders below to see your ratings for Health, Education, and Wealth. Discover what is holding
+          you back and what to focus on next.
+        </p>
+      </div>
+    </section>
+
+    <!-- Assessment Calculator Section -->
+    <section class="section-padding">
+      <div class="container">
+        <div class="assessment-box reveal-scale">
+
+          <!-- Slider Controls -->
+          <div class="assessment-controls">
+            <h2 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem; font-family: var(--font-heading);">
+              Your Ratings (1 to 10)
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem;">
+              Slide each bar to rate where you stand right now.
+            </p>
+
+            <!-- Health Slider -->
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="slider-name">
+                  <span class="dot" style="background: var(--health);"></span>
+                  Health &amp; Daily Energy (Sleep, Food, Fitness)
+                </span>
+                <span class="slider-val-readout" id="val-health">7/10</span>
+              </div>
+              <input type="range" class="hew-range-slider" id="slider-health" min="1" max="10" value="7"
+                aria-label="Health and Energy Slider">
+              <div class="slider-hints">
+                <span>Tired / Low Energy</span>
+                <span>Fully Energized Every Day</span>
+              </div>
+            </div>
+
+            <!-- Education Slider -->
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="slider-name">
+                  <span class="dot" style="background: var(--education);"></span>
+                  Skills &amp; Knowledge (Digital Skills, Audience, Brand)
+                </span>
+                <span class="slider-val-readout" id="val-education">6/10</span>
+              </div>
+              <input type="range" class="hew-range-slider" id="slider-education" min="1" max="10" value="6"
+                aria-label="Skills and Knowledge Slider">
+              <div class="slider-hints">
+                <span>Basic Skills</span>
+                <span>High-Demand Expert Skills</span>
+              </div>
+            </div>
+
+            <!-- Wealth Slider -->
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="slider-name">
+                  <span class="dot" style="background: var(--wealth);"></span>
+                  Income &amp; Wealth (Extra Streams, Savings)
+                </span>
+                <span class="slider-val-readout" id="val-wealth">5/10</span>
+              </div>
+              <input type="range" class="hew-range-slider" id="slider-wealth" min="1" max="10" value="5"
+                aria-label="Income and Wealth Slider">
+              <div class="slider-hints">
+                <span>Single Job Dependent</span>
+                <span>Multiple Income Streams</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Gauge & Guidance Breakdown -->
+          <div class="assessment-output-col">
+            <div class="score-radial-wrapper">
+              <div class="score-circle-graphic">
+                <svg viewBox="0 0 130 130" class="score-radial-svg" style="width: 140px; height: 140px;">
+                  <circle class="score-circle-bg" cx="65" cy="65" r="55"></circle>
+                  <circle id="score-circle-bar" class="score-circle-bar" cx="65" cy="65" r="55"></circle>
+                </svg>
+                <div class="score-number-center">
+                  <span class="score-value-big" id="overall-hew-score">62</span>
+                  <span class="score-total-denom">/ 100</span>
+                </div>
+              </div>
+              <div class="score-category-badge" id="score-category-text" style="color: var(--primary);">Growing Fast
+              </div>
+            </div>
+
+            <div class="assessment-diagnosis-card">
+              <h4 id="assessment-verdict-title">⚠️ Your Biggest Area to Improve: Income &amp; Savings</h4>
+              <p id="assessment-verdict-desc">
+                You have great skills and energy, but you rely on only one paycheck. Learning how to build extra income
+                streams will give you true financial peace of mind.
+              </p>
+              <div class="action-recommendation">
+                <strong>Recommended Next Step:</strong>
+                <span>Attend Batch #1 Masterclass to learn practical extra income streams.</span>
+              </div>
+            </div>
+
+            <button class="btn-primary trigger-booking-modal" data-context="HEW Score Assessment Page CTA"
+              style="width: 100%; margin-top: 1.25rem;">
+              Join Free Masterclass For Your Score
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Score Tiers Reference Guide -->
+    <section class="section-padding bg-surface">
+      <div class="container">
+        <div class="section-header center reveal">
+          <div class="eyebrow">
+            <span></span> Score Levels
+          </div>
+          <h2 class="section-title">The Four <em>HEW Score Levels</em></h2>
+          <p class="section-desc">Understand where you stand and what to focus on next.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;"
+          class="reveal">
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2rem;">
+            <div style="color: var(--wealth); font-weight: 800; font-size: 0.9rem; margin-bottom: 0.5rem;">LEVEL 1 (0 –
+              49)</div>
+            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Fresh Start</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+              You are feeling tired or stuck. Your immediate priority is fixing your sleep and learning one in-demand
+              digital skill.
+            </p>
+          </div>
+
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2rem;">
+            <div style="color: var(--primary); font-weight: 800; font-size: 0.9rem; margin-bottom: 0.5rem;">LEVEL 2 (50
+              – 69)</div>
+            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Growing Fast</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+              You have good energy and work hard, but you depend on only one salary. You need extra online income
+              streams.
+            </p>
+          </div>
+
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2rem;">
+            <div style="color: var(--health); font-weight: 800; font-size: 0.9rem; margin-bottom: 0.5rem;">LEVEL 3 (70 –
+              84)</div>
+            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Strong &amp; Stable</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+              You have strong skills and good health habits. The next step is building your personal brand and growing
+              your savings.
+            </p>
+          </div>
+
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2rem;">
+            <div style="color: var(--gold-accent); font-weight: 800; font-size: 0.9rem; margin-bottom: 0.5rem;">LEVEL 4
+              (85 – 100)</div>
+            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Peak Master</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+              Great balance across all 3 areas. You have high daily energy, recognized skills, and multiple income
+              streams.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+            <div class="brand-text">
+              <span class="brand-title">HEW <span>GROUPS</span></span>
+              <span class="brand-subtitle">Health · Education · Wealth</span>
+            </div>
+          </a>
+          <p>
+            HEW Groups helps ambitious individuals build a healthier body, high-demand digital skills, and sustainable
+            wealth independence.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>LEGAL &amp; POLICIES</h4>
+          <ul class="footer-links">
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>EXPLORE HEW</h4>
+          <ul class="footer-links">
+            <li><a href="pillars.html">The 3 Pillars (H · E · W)</a></li>
+            <li><a href="curriculum.html">What You'll Master</a></li>
+            <li><a href="coach.html">Meet Our Coach</a></li>
+            <li><a href="assessment.html">Interactive HEW Score</a></li>
+            <li><a href="stories.html">Success Stories</a></li>
+            <li><a href="faq.html">FAQ &amp; Masterclass Info</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disclaimer-box">
+          Results depend on your individual effort, practice, consistency, and market conditions. No income or earnings
+          are guaranteed. Educational and mentorship content only.
+        </div>
+        <div class="copyright-box">
+          © 2026 HEW Groups. All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <div id="modal-body-content"></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
