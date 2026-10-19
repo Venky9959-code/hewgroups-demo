@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,8 +12,318 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Allura&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="icon" type="image/png" href="assets/logo/HEW Groups - FINAL.png">
+    <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/x-icon" href="assets/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/HEW-Groups_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/HEW-Groups_16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/HEW-Groups_180x180.png">
+    <meta property="og:image" content="assets/logo/HEW-Groups_OpenGraph_1200x630.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="assets/logo/HEW-Groups_OpenGraph_1200x630.png">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Scoped Styles for Mentor Live Action Showcase (HEW Light Palette) -->
+  <style>
+    .mentor-hype-section {
+      background: var(--bg-surface);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mentor-stats-banner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .mstat-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .mstat-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .mstat-num {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .mstat-lbl {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      font-weight: 600;
+    }
+
+    .mentor-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+
+    .col-7 {
+      grid-column: span 7;
+    }
+
+    .col-5 {
+      grid-column: span 5;
+    }
+
+    .col-4 {
+      grid-column: span 4;
+    }
+
+    .col-6 {
+      grid-column: span 6;
+    }
+
+    .mentor-photo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .mentor-photo-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .mentor-photo-card .card-media-wrap {
+      position: relative;
+      width: 100%;
+      background: #E8EFEA;
+      overflow: hidden;
+    }
+
+    .mentor-photo-card .card-media-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .mentor-photo-card:hover .card-media-wrap img {
+      transform: scale(1.03);
+    }
+
+    .mentor-photo-card .card-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-grow: 1;
+      background: var(--bg-card);
+    }
+
+    .card-pill-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(15, 27, 20, 0.12);
+      backdrop-filter: blur(6px);
+      z-index: 2;
+    }
+
+    .badge-gold {
+      background: var(--wealth-tint);
+      color: var(--wealth-dark);
+      border: 1px solid rgba(201, 149, 27, 0.35);
+    }
+
+    .badge-cyan {
+      background: var(--education-tint);
+      color: var(--education-dark);
+      border: 1px solid rgba(5, 96, 238, 0.3);
+    }
+
+    .badge-green {
+      background: var(--health-tint);
+      color: var(--health);
+      border: 1px solid rgba(10, 100, 16, 0.3);
+    }
+
+    .pulse-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--health);
+      box-shadow: 0 0 6px var(--health);
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0.9);
+        opacity: 0.7;
+      }
+    }
+
+    .coach-floating-stage-badge {
+      position: absolute;
+      top: 85px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid var(--border-subtle);
+      padding: 0.55rem 0.95rem;
+      border-radius: 6px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      font-weight: 700;
+      z-index: 3;
+    }
+
+    .mentor-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .mentor-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .mentor-card-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 0.6rem;
+    }
+
+    .mentor-card-tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      font-weight: 600;
+    }
+
+    .mentor-action-cta {
+      margin-top: 3.5rem;
+      background: var(--wealth-tint);
+      border: 1.5px solid rgba(201, 149, 27, 0.35);
+      border-radius: 8px;
+      padding: 2.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 992px) {
+      .mentor-gallery-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .col-7,
+      .col-5,
+      .col-6 {
+        grid-column: span 6;
+      }
+
+      .col-4 {
+        grid-column: span 3;
+      }
+
+      .col-7 .card-media-wrap,
+      .col-5 .card-media-wrap {
+        height: 300px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mentor-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .col-7,
+      .col-5,
+      .col-4,
+      .col-6 {
+        grid-column: span 1;
+      }
+
+      .mentor-photo-card .card-media-wrap {
+        height: 240px !important;
+      }
+
+      .col-7 .card-media-wrap,
+      .col-5 .card-media-wrap {
+        height: 260px !important;
+      }
+
+      .cta-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mentor-photo-card .card-media-wrap {
+        height: 210px !important;
+      }
+
+      .col-7 .card-media-wrap,
+      .col-5 .card-media-wrap {
+        height: 230px !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -24,7 +334,7 @@
   <header class="site-header">
     <div class="container nav-container">
       <a href="index.html" class="brand-logo" aria-label="HEW Groups Home">
-        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+        <img src="assets/logo/HEW-Groups_Transparent.png" alt="HEW Groups Logo" class="brand-logo-img">
         <div class="brand-text">
           <span class="brand-title">HEW <span>GROUPS</span></span>
           <span class="brand-subtitle">Health · Education · Wealth</span>
@@ -36,7 +346,6 @@
         <ul class="nav-links">
           <li><a href="index.html" class="nav-link">Home</a></li>
           <li><a href="about.html" class="nav-link">About Us</a></li>
-          <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="mentor.html" class="nav-link active">Mentor</a></li>
           <li><a href="testimonials.html" class="nav-link">Testimonials</a></li>
         </ul>
@@ -63,7 +372,6 @@
   <div class="mobile-drawer" aria-label="Mobile Navigation Menu">
     <a href="index.html" class="nav-link">Home</a>
     <a href="about.html" class="nav-link">About Us</a>
-    <a href="blog.html" class="nav-link">Blog</a>
     <a href="mentor.html" class="nav-link active">Mentor</a>
     <a href="testimonials.html" class="nav-link">Testimonials</a>
     <button class="btn-primary trigger-booking-modal" style="width: 100%; margin-top: 1rem;">
@@ -121,6 +429,8 @@
                 <span class="exp-num" data-counter="8" data-suffix="+">8+</span>
                 <span class="exp-text">Years of Real-World<br>Experience</span>
               </div>
+
+
             </div>
 
             <!-- Coach Signature Strip -->
@@ -155,7 +465,7 @@
               </div>
               <div class="cred-card">
                 <div class="cred-icon">✓</div>
-                <div class="cred-text">Smart money &amp; saving habits</div>
+                <div class="cred-text">Smart money, real estate &amp; wealth habits</div>
               </div>
               <div class="cred-card">
                 <div class="cred-icon">✓</div>
@@ -185,6 +495,216 @@
       </div>
     </section>
 
+    <!-- ========================================================================
+         COACH SREENIVAS LIVE ACTION & AUDITORIUM HYPE SHOWCASE
+         ======================================================================== -->
+    <section class="section-padding mentor-hype-section">
+      <div class="ambient-glow-sphere glow-gold" style="top: 20%; right: 10%;"></div>
+      <div class="ambient-glow-sphere glow-cyan" style="bottom: 15%; left: 5%;"></div>
+      <div class="container">
+
+        <!-- Section Header -->
+        <div class="section-header center reveal">
+
+          <h2 class="section-title">
+            Helping People Learn, Grow, and <em>Succeed</em>
+          </h2>
+          <p class="section-desc">
+            Coach Sreenivas Paturi loves guiding people. Whether speaking on a big stage, holding small group meetings,
+            or mentoring one-on-one, his goal is to make growth simple and real for everyone.
+          </p>
+        </div>
+
+        <!-- Hype & Credibility Metrics Strip -->
+        <div class="mentor-stats-banner reveal">
+          <div class="mstat-item">
+            <div class="mstat-num">10,000+</div>
+            <div class="mstat-lbl">People Guided in AP &amp; Telangana</div>
+          </div>
+          <div class="mstat-item">
+            <div class="mstat-num">50+</div>
+            <div class="mstat-lbl">Live Sessions &amp; College Talks</div>
+          </div>
+          <div class="mstat-item">
+            <div class="mstat-num">8+ Years</div>
+            <div class="mstat-lbl">Real Business &amp; Teaching Experience</div>
+          </div>
+          <div class="mstat-item">
+            <div class="mstat-num">100%</div>
+            <div class="mstat-lbl">Practical Lessons You Can Use Right Away</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Bento Gallery of Mentor Photos -->
+        <div class="mentor-gallery-grid stagger-items reveal">
+
+          <!-- Card 1: Stadium Keynote Address (Main Highlight) -->
+          <article class="mentor-photo-card col-7">
+            <div class="card-media-wrap" style="height: 340px;">
+
+              <img src="assets/mentor/image7.jpeg" alt="Coach Sreenivas Paturi speaking on stage at SIC 2025"
+                style="object-position: 38% 28%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Speaking to Over 1,500 People</h3>
+              <p class="mentor-card-desc">
+                Coach Sreenivas speaking on a big stage at SIC 2025. He shared easy habits for good health, skills to
+                earn more money, and how to build long-term savings.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Live Stage</span>
+                <span class="mentor-card-tag">1,500+ Audience</span>
+                <span class="mentor-card-tag">Real Life Advice</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: Executive Business & Strategy Mentorship -->
+          <article class="mentor-photo-card col-5">
+            <div class="card-media-wrap" style="height: 340px;">
+
+              <img src="assets/mentor/image2.jpeg" alt="Coach Sreenivas Paturi guiding professionals on strategy"
+                style="object-position: center 20%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Personal Advice &amp; Clear Steps</h3>
+              <p class="mentor-card-desc">
+                Helping people find what is holding them back and giving them an easy step-by-step plan to grow their
+                career and income.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Career Growth</span>
+                <span class="mentor-card-tag">Clear Plan</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: Interactive Stage Coaching -->
+          <article class="mentor-photo-card col-4">
+            <div class="card-media-wrap" style="height: 250px;">
+
+              <img src="assets/mentor/image1.jpeg" alt="Coach Sreenivas Paturi teaching on stage with microphone"
+                style="object-position: 65% 18%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Practical Steps You Can Use Today</h3>
+              <p class="mentor-card-desc">
+                Easy lessons with zero confusing talk. Coach Sreenivas teaches daily habits and skills that get real
+                results.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Direct Answers</span>
+                <span class="mentor-card-tag">Simple Habits</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4: Grassroots Leadership Huddles -->
+          <article class="mentor-photo-card col-4">
+            <div class="card-media-wrap" style="height: 250px;">
+
+              <img src="assets/mentor/image8.jpeg" alt="Coach Sreenivas Paturi meeting and coaching students outside"
+                style="object-position: 40% 30%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Meeting &amp; Helping Students Directly</h3>
+              <p class="mentor-card-desc">
+                Spending time with students on campus, answering their questions, and helping them stay focused and
+                confident.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Friendly Guidance</span>
+                <span class="mentor-card-tag">Student Support</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5: Cohort Certification & Student Milestones -->
+          <article class="mentor-photo-card col-4">
+            <div class="card-media-wrap" style="height: 250px;">
+
+              <img src="assets/mentor/image6.jpeg" alt="Coach Sreenivas Paturi celebrating certificates with students"
+                style="object-position: center 45%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Celebrating Real Student Success</h3>
+              <p class="mentor-card-desc">
+                Celebrating students who finished their learning, gained practical skills, and started earning on their
+                own.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Real Certificates</span>
+                <span class="mentor-card-tag">Happy Students</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 6: Executive Masterminds & Think Tanks -->
+          <article class="mentor-photo-card col-6">
+            <div class="card-media-wrap" style="height: 260px;">
+
+              <img src="assets/mentor/image3.jpeg" alt="Coach Sreenivas Paturi in conference roundtable meeting"
+                style="object-position: center 38%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Learning &amp; Planning Together</h3>
+              <p class="mentor-card-desc">
+                Sitting down with hard-working professionals and business owners to share ideas and plan for the future.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Team Meeting</span>
+                <span class="mentor-card-tag">Smart Ideas</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 7: High-Voltage Auditorium Community -->
+          <article class="mentor-photo-card col-6">
+            <div class="card-media-wrap" style="height: 260px;">
+              <img src="assets/mentor/image4.jpeg" alt="Coach Sreenivas Paturi with large audience in auditorium"
+                style="object-position: center 58%;" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="mentor-card-title">Full Hall of Motivated People</h3>
+              <p class="mentor-card-desc">
+                Hundreds of energetic people coming together to learn, support each other, and build a brighter future.
+              </p>
+              <div class="mentor-card-tags">
+                <span class="mentor-card-tag">Great Energy</span>
+                <span class="mentor-card-tag">Strong Community</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- High-Converting Bottom Action CTA -->
+        <div class="mentor-action-cta reveal">
+          <div class="cta-inner">
+            <div>
+
+              <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--text-main); margin-top: 0.5rem;">
+                Learn Directly From Coach Sreenivas
+              </h3>
+              <p
+                style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; max-width: 620px; line-height: 1.6;">
+                Join our next free live session online. Discover simple steps you can take today to improve your health,
+                build useful skills, and manage your money with peace of mind.
+              </p>
+            </div>
+            <button class="btn-primary trigger-booking-modal"
+              style="min-width: 250px; height: 54px; font-size: 1.05rem;">
+              Reserve My Free Seat
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Mentorship Promises Section -->
     <section class="section-padding bg-surface">
       <div class="container">
@@ -200,7 +720,8 @@
             style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2.25rem;">
             <div style="color: var(--primary); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">PROMISE #1
             </div>
-            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Real Experience, Not Just Talk</h3>
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.75rem;">Real Experience, Not Just
+              Talk</h3>
             <p style="color: var(--text-muted); font-size: 0.925rem; line-height: 1.7;">
               Coach Sreenivas teaches only what he currently runs and practices in his own businesses. Zero boring
               textbook theory, 100% practical real-world experience.
@@ -209,9 +730,10 @@
 
           <div
             style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2.25rem;">
-            <div style="color: var(--health); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">PROMISE #2
+            <div style="color: var(--education); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">
+              PROMISE #2
             </div>
-            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Health Comes First</h3>
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.75rem;">Health Comes First</h3>
             <p style="color: var(--text-muted); font-size: 0.925rem; line-height: 1.7;">
               Earning good money while destroying your health, sleep, and peace of mind is not success. HEW makes sure
               you stay energetic, happy, and healthy as your income grows.
@@ -222,7 +744,8 @@
             style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 2.25rem;">
             <div style="color: var(--wealth); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">PROMISE #3
             </div>
-            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem;">Clear Step-by-Step Action</h3>
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.75rem;">Clear Step-by-Step Action
+            </h3>
             <p style="color: var(--text-muted); font-size: 0.925rem; line-height: 1.7;">
               Ideas alone do not create change; action does. Our masterclass gives you simple, practical steps you can
               follow immediately without feeling overwhelmed.
@@ -239,7 +762,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a href="index.html" class="brand-logo">
-        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+            <img src="assets/logo/HEW-Groups_Transparent.png" alt="HEW Groups Logo" class="brand-logo-img">
             <div class="brand-text">
               <span class="brand-title">HEW <span>GROUPS</span></span>
               <span class="brand-subtitle">Health · Education · Wealth</span>

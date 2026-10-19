@@ -331,8 +331,8 @@ function initAssessmentCalculator() {
       verdictDesc.textContent = "You work hard, but your skills are not earning you what you deserve. Learning in-demand digital skills and easy AI tools will help you grow your income much faster.";
       verdictTitle.style.color = "var(--education-light)";
     } else if (minVal === w && w < 6) {
-      verdictTitle.textContent = "Your Biggest Area to Improve: Income & Savings";
-      verdictDesc.textContent = "You have great energy and drive, but you still rely on only one paycheck. Learning how to build extra income streams will give you true financial peace of mind.";
+      verdictTitle.textContent = "Your Biggest Area to Improve: Income, Real Estate & Savings";
+      verdictDesc.textContent = "You have great energy and drive, but you still rely on only one paycheck. Learning how to build extra income streams and invest in real estate assets will give you true financial peace of mind.";
       verdictTitle.style.color = "var(--wealth-light)";
     } else {
       verdictTitle.textContent = "Great Job: You Have A Solid Foundation!";
@@ -349,7 +349,7 @@ function initAssessmentCalculator() {
 
   if (applyScoreBtn) {
     applyScoreBtn.addEventListener('click', () => {
-      openBookingModal(`HEW Synergy Score: ${currentDisplayedScore}/100`);
+      openBookingModal();
     });
   }
 }
@@ -516,8 +516,7 @@ function initModalHandlers() {
   openTriggers.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const context = btn.getAttribute('data-context') || '';
-      openBookingModal(context);
+      openBookingModal();
     });
   });
 
@@ -540,7 +539,7 @@ function initModalHandlers() {
   });
 }
 
-function openBookingModal(context = '') {
+function openBookingModal() {
   const modal = document.getElementById('booking-modal') || document.getElementById('bookingModal');
   if (!modal) return;
   let modalBody = document.getElementById('modal-body-content');
@@ -562,7 +561,7 @@ function openBookingModal(context = '') {
       <span class="sub-tag">HEW Groups · Cohort #1</span>
       <h3 style="font-size: 1.85rem; font-weight: 700;">Reserve Your Live Seat</h3>
       <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
-        ${context ? `<strong style="color: var(--primary);">${escapeHtml(context)}</strong> · ` : ''}Instant access link delivered to your WhatsApp.
+        Instant access link delivered to your WhatsApp.
       </p>
     </div>
 
@@ -587,7 +586,7 @@ function openBookingModal(context = '') {
           <option value="Complete Transformation (All 3)" selected>Complete Transformation (H + E + W)</option>
           <option value="Health (Energy, Stamina & Longevity)">Health & Bio-Optimization</option>
           <option value="Education (Modern High-Income Skills)">Education & Skill Architecture</option>
-          <option value="Wealth (Cashflow & Compounding)">Wealth & Passive Portfolios</option>
+          <option value="Wealth (Cashflow, Real Estate & Compounding)">Wealth, Real Estate & Passive Portfolios</option>
         </select>
       </div>
       <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; height: 52px;">

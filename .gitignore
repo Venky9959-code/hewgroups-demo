@@ -1,0 +1,7 @@
+# Large master bundle archive and duplicate raw assets (kept locally)
+HEW-Groups-Logo-Master-Bundle.zip
+HEW-Groups-Logo-Master-Bundle/
+
+# Local backups
+*.backup.*
+*.original.*

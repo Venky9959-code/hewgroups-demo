@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,7 +18,14 @@
     rel="stylesheet">
 
   <!-- Charcoal Olive & Soft Neutral Design Stylesheet -->
-  <link rel="icon" type="image/png" href="assets/logo/HEW Groups - FINAL.png">
+    <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/x-icon" href="assets/logo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/HEW-Groups_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/HEW-Groups_16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/HEW-Groups_180x180.png">
+    <meta property="og:image" content="assets/logo/HEW-Groups_OpenGraph_1200x630.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="assets/logo/HEW-Groups_OpenGraph_1200x630.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -32,7 +39,7 @@
     <div class="container nav-container">
       <!-- Corporate Brand Identity -->
       <a href="index.html" class="brand-logo" aria-label="HEW Groups Home">
-        <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+        <img src="assets/logo/HEW-Groups_Transparent.png" alt="HEW Groups Logo" class="brand-logo-img">
         <div class="brand-text">
           <span class="brand-title">HEW <span>GROUPS</span></span>
           <span class="brand-subtitle">Health · Education · Wealth</span>
@@ -44,7 +51,6 @@
         <ul class="nav-links">
           <li><a href="index.html" class="nav-link active">Home</a></li>
           <li><a href="about.html" class="nav-link">About Us</a></li>
-          <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="mentor.html" class="nav-link">Mentor</a></li>
           <li><a href="testimonials.html" class="nav-link">Testimonials</a></li>
         </ul>
@@ -71,7 +77,6 @@
   <div class="mobile-drawer" aria-label="Mobile Navigation Menu">
     <a href="index.html" class="nav-link active">Home</a>
     <a href="about.html" class="nav-link">About Us</a>
-    <a href="blog.html" class="nav-link">Blog</a>
     <a href="mentor.html" class="nav-link">Mentor</a>
     <a href="testimonials.html" class="nav-link">Testimonials</a>
     <button class="btn-primary trigger-booking-modal" style="width: 100%; margin-top: 1rem;">
@@ -97,8 +102,8 @@
         <div class="hero-copy-col reveal-left">
 
           <h1 class="hero-headline">
-            <span class="headline-prefix">Building the Future of</span><br>
-            <span class="text-gradient-hew">Health · Education · Wealth</span>
+            <span class="headline-prefix">Building the Future of</span><br class="hero-br-desktop">
+            <span class="text-gradient-hew">Health &middot; <span style="display:inline-block;">Education &middot; Wealth</span></span>
           </h1>
           <p class="hero-subheading">
             <strong>HEW Groups</strong> helps you build a healthier body, learn high-demand digital skills, and create
@@ -126,8 +131,7 @@
 
           <!-- Action CTA & Trust Stack -->
           <div class="hero-cta-group">
-            <button class="btn-primary trigger-booking-modal" data-context="Hero Primary CTA"
-              style="min-height: 56px; padding: 0 2rem; font-size: 1.05rem;">
+            <button class="btn-primary trigger-booking-modal" data-context="Hero Primary CTA">
               Join Now
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />
@@ -205,8 +209,11 @@
               <div class="hub-title">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                   color="var(--wealth)">
-                  <line x1="12" y1="1" x2="12" y2="23" />
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  <path d="M6 3h12" />
+                  <path d="M6 8h12" />
+                  <path d="m6 13 8.5 8" />
+                  <path d="M6 13h3" />
+                  <path d="M9 13c6.667 0 6.667-10 0-10" />
                 </svg>
                 WEALTH
               </div>
@@ -220,7 +227,7 @@
               </div>
             </div>
             <p class="hub-desc">
-              Multiple income streams, smart saving habits, and true financial independence.
+              Multiple income streams, real estate investments, smart saving habits, and true financial independence.
             </p>
           </div>
 
@@ -335,15 +342,18 @@
             <div class="pillar-top">
               <div class="pillar-icon-box">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23" />
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  <path d="M6 3h12" />
+                  <path d="M6 8h12" />
+                  <path d="m6 13 8.5 8" />
+                  <path d="M6 13h3" />
+                  <path d="M9 13c6.667 0 6.667-10 0-10" />
                 </svg>
               </div>
               <span class="pillar-letter">W</span>
             </div>
             <h3 class="pillar-title">WEALTH & ASSET GROWTH</h3>
             <p class="pillar-tagline">
-              Stop trading all your hours for a fixed paycheck. Learn to build online income streams and grow your money
+              Stop trading all your hours for a fixed paycheck. Learn to build online income streams, real estate assets, and grow your money
               over time.
             </p>
             <ul class="pillar-features">
@@ -352,6 +362,12 @@
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 Build multiple income streams that earn money even while you sleep
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Real estate fundamentals, rental yield strategies, and property asset appreciation
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -396,7 +412,11 @@
             <div class="curriculum-step">
               <div class="curriculum-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  <path d="M6 3h12" />
+                  <path d="M6 8h12" />
+                  <path d="m6 13 8.5 8" />
+                  <path d="M6 13h3" />
+                  <path d="M9 13c6.667 0 6.667-10 0-10" />
                 </svg>
               </div>
               <span class="curriculum-num">01</span>
@@ -421,11 +441,11 @@
               </div>
               <span class="curriculum-num">02</span>
             </div>
-            <h3>Build Multiple Income Streams</h3>
+            <h3>Build Multiple Income Streams &amp; Real Estate</h3>
             <p>
-              Practical ways to build extra income streams online so you do not rely on just one paycheck.
+              Practical ways to build extra income streams online and invest in real estate assets so you do not rely on just one paycheck.
             </p>
-            <span class="curriculum-pill">Phase 02 · Extra Income</span>
+            <span class="curriculum-pill">Phase 02 · Extra Income &amp; Real Estate</span>
           </article>
 
           <!-- Phase 03 -->
@@ -487,57 +507,51 @@
           <!-- Story 1 -->
           <article class="testimonial-card">
             <p class="testimonial-quote">
-              Before HEW Groups, I was working 60 hours a week with zero energy and a flat salary. The simple sleep
-              habits gave me back my energy within 2 weeks, and Coach Sreenivas's practical advice helped me sign my
-              first ₹1.8L consulting client!
+              &ldquo;HEW helped me understand the importance of personal development, learning new skills, and exploring opportunities for my future. It motivated me to think bigger and keep learning!&rdquo;
             </p>
             <div class="testimonial-meta">
               <div class="user-profile">
-                <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">AR</div>
+                <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">AK</div>
                 <div>
-                  <div class="user-name">Arjun R.</div>
-                  <div class="user-role">IT Consultant, Bengaluru</div>
+                  <div class="user-name">⭐ Akash</div>
+                  <div class="user-role">Student | Hyderabad</div>
                 </div>
               </div>
-              <span class="metric-badge">+₹1.8L Income</span>
+              <span class="metric-badge">⭐ 5.0 Rating</span>
             </div>
           </article>
 
           <!-- Story 2 -->
           <article class="testimonial-card">
             <p class="testimonial-quote">
-              The Wealth lessons completely changed how I think about money. I stopped wasting money on risky bets and
-              learned how to save and invest steadily. Plus, the simple daily habits helped me lose weight and feel
-              great.
+              &ldquo;Being part of the HEW journey has inspired me to focus on my personal growth and explore new learning opportunities. It has encouraged me to build confidence and work towards my goals.&rdquo;
             </p>
             <div class="testimonial-meta">
               <div class="user-profile">
-                <div class="user-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706);">PS</div>
+                <div class="user-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706);">LA</div>
                 <div>
-                  <div class="user-name">Pooja S.</div>
-                  <div class="user-role">Marketing Lead, Mumbai</div>
+                  <div class="user-name">⭐ Lavanya</div>
+                  <div class="user-role">Homemaker | Hyderabad</div>
                 </div>
               </div>
-              <span class="metric-badge">3x Savings</span>
+              <span class="metric-badge">⭐ 5.0 Rating</span>
             </div>
           </article>
 
           <!-- Story 3 -->
           <article class="testimonial-card">
             <p class="testimonial-quote">
-              HEW Groups does not give you fake motivation. It gives you clear, practical steps that work. Coach
-              Sreenivas is genuinely helpful and the Batch #1 masterclass gave me more clarity than 4 years of college
-              ever did.
+              &ldquo;HEW inspired me to focus on learning, self-improvement, and building a better future. The experience has motivated me to develop new skills and take positive steps towards my dreams.&rdquo;
             </p>
             <div class="testimonial-meta">
               <div class="user-profile">
-                <div class="user-avatar" style="background: linear-gradient(135deg, #06b6d4, #0284c7);">VK</div>
+                <div class="user-avatar" style="background: linear-gradient(135deg, #06b6d4, #0284c7);">CH</div>
                 <div>
-                  <div class="user-name">Vikram K.</div>
-                  <div class="user-role">Agency Founder, Delhi</div>
+                  <div class="user-name">⭐ Chandana</div>
+                  <div class="user-role">Student | Andhra Pradesh</div>
                 </div>
               </div>
-              <span class="metric-badge">Scaled 4x Revenue</span>
+              <span class="metric-badge">⭐ 5.0 Rating</span>
             </div>
           </article>
         </div>
@@ -569,7 +583,7 @@
             <div class="faq-answer">
               HEW Groups is a comprehensive transformation enterprise built on the reality that peak human flourishing
               requires all three pillars in harmony. Health provides physical stamina; Education provides monopolistic
-              skill leverage; and Wealth provides freedom and choices. Isolating one while neglecting the others
+              skill leverage; and Wealth provides freedom, real estate security, and choices. Isolating one while neglecting the others
               inevitably creates burnout or financial limitation.
             </div>
           </div>
@@ -684,7 +698,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a href="index.html" class="brand-logo">
-            <img src="assets/logo/HEW Groups - FINAL.png" alt="HEW Groups Logo" class="brand-logo-img">
+            <img src="assets/logo/HEW-Groups_Transparent.png" alt="HEW Groups Logo" class="brand-logo-img">
             <div class="brand-text">
               <span class="brand-title">HEW <span>GROUPS</span></span>
               <span class="brand-subtitle">Health · Education · Wealth</span>
