@@ -875,7 +875,37 @@ button {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
-  white-space: nowrap;
+  white-space: nowrap !important;
+}
+
+/* Aijugaad.co Exact Roll-Transition Styles */
+.aijugaad-text-rotator {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap !important;
+  line-height: 1.18;
+  padding-bottom: 0.06em;
+}
+
+.aijugaad-text-enter,
+.aijugaad-text-exit {
+  display: inline-block;
+  white-space: nowrap !important;
+  will-change: transform, opacity;
+  background: linear-gradient(90deg, var(--health) 0%, var(--education) 50%, var(--wealth) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aijugaad-text-exit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .hero-subheading {
@@ -3252,11 +3282,18 @@ input[type="range"]::-webkit-slider-thumb,
   }
 
   .text-gradient-hew {
-    font-size: 1.1em;
+    font-size: clamp(1.02rem, 4.9vw, 1.85rem) !important;
     font-weight: 800;
-    display: inline;
-    white-space: normal !important;
-    line-height: 1.15;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    line-height: 1.18;
+    max-width: 100%;
+  }
+
+  .aijugaad-text-rotator {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    max-width: 100%;
   }
 
   .hero-subheading {
@@ -3715,8 +3752,20 @@ input[type="range"]::-webkit-slider-thumb,
   }
 
   .hero-headline {
-    font-size: clamp(1.5rem, 6vw, 1.95rem);
+    font-size: clamp(1.4rem, 5.8vw, 1.95rem);
     line-height: 1.2;
+  }
+
+  .text-gradient-hew {
+    font-size: clamp(0.98rem, 4.6vw, 1.45rem) !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+  }
+
+  .aijugaad-text-rotator {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    max-width: 100%;
   }
 
   .headline-prefix {
@@ -3815,6 +3864,11 @@ input[type="range"]::-webkit-slider-thumb,
 
   .brand-title {
     font-size: 0.98rem;
+  }
+
+  .text-gradient-hew {
+    font-size: clamp(0.9rem, 4.3vw, 1.05rem) !important;
+    white-space: nowrap !important;
   }
 
   .company-stats-matrix {

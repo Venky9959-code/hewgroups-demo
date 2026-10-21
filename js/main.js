@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDynamicDates();
   initButtonRipple();
   initPillarStationedBalloons();
+  initAijugaadTextTransition();
 });
 
 /* ==========================================================================
@@ -675,5 +676,56 @@ function initPillarStationedBalloons() {
   });
 }
 
+/* ==========================================================================
+   AIJUGAAD TEXT TRANSITION ENGINE (Exact "We Are Chefs" Roll & Flip)
+   ========================================================================== */
+function initAijugaadTextTransition() {
+  const container = document.querySelector('.aijugaad-text-rotator');
+  if (!container) return;
 
+  const enterEl = container.querySelector('.aijugaad-text-enter');
+  const exitEl = container.querySelector('.aijugaad-text-exit');
+  if (!enterEl || !exitEl) return;
 
+  const text = enterEl.innerHTML;
+
+  const animOptions = {
+    duration: 700,
+    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    fill: 'both'
+  };
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Initial reveal animation on page load (identical to aijugaad.co)
+  if (!isReducedMotion) {
+    enterEl.animate([
+      { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+      { transform: 'none', opacity: 1 }
+    ], animOptions);
+  }
+
+  // Periodic roll transition loop (2.8s cycle)
+  setInterval(() => {
+    if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    exitEl.innerHTML = text;
+    enterEl.innerHTML = text;
+
+    enterEl.animate([
+      { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+      { transform: 'none', opacity: 1 }
+    ], animOptions);
+
+    const exitAnim = exitEl.animate([
+      { transform: 'none', opacity: 1 },
+      { transform: 'translateY(-115%) rotate(-3deg)', opacity: 0 }
+    ], animOptions);
+
+    exitAnim.onfinish = () => {
+      exitEl.innerHTML = '';
+    };
+  }, 2800);
+}
