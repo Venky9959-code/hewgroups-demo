@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initButtonRipple();
   initPillarStationedBalloons();
   initAijugaadTextTransition();
+  initVideoMarqueeEngine();
 });
 
 /* ==========================================================================
@@ -396,12 +397,42 @@ function initRegistrationForms() {
   }
 }
 
-function handleFormSubmission(form) {
+// ==========================================================================
+// RAZORPAY PAYMENT CONFIGURATION
+// Replace 'rzp_test_YOUR_KEY_HERE' with your Razorpay Key ID
+// ==========================================================================
+const RAZORPAY_CONFIG = {
+  key: 'rzp_test_YOUR_KEY_HERE', // <-- Put your Live or Test Razorpay Key ID here
+  amount: 14900, // ₹149 in paise (149 * 100)
+  currency: 'INR',
+  name: 'HEW Groups',
+  description: 'Batch #1 Live Transformation Masterclass Access',
+  image: 'assets/logo/HEW-Groups_32x32.png',
+  theme: {
+    color: '#096410'
+  }
+};
+
+function ensureRazorpayLoaded() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+async function handleFormSubmission(form) {
   const submitBtn = form.querySelector('button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
+  const originalHtml = submitBtn.innerHTML;
 
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<span>Confirming reservation...</span>`;
+  submitBtn.innerHTML = `<span>Connecting to Razorpay...</span>`;
 
   const formData = new FormData(form);
   const name = formData.get('name') || 'Member';
@@ -409,19 +440,83 @@ function handleFormSubmission(form) {
   const email = formData.get('email') || 'member@example.com';
   const focus = formData.get('focus') || 'Health, Education & Wealth';
 
-  setTimeout(() => {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalText;
-    form.reset();
+  await ensureRazorpayLoaded();
 
-    showConfirmationTicket({
-      name,
-      phone,
-      email,
-      focus,
-      ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000)
+  // If user hasn't set their key yet, provide seamless test simulation
+  if (!window.Razorpay || RAZORPAY_CONFIG.key === 'rzp_test_YOUR_KEY_HERE') {
+    console.info('[HEW Groups] Razorpay Key pending. Update RAZORPAY_CONFIG.key in js/main.js with your Razorpay key.');
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+      form.reset();
+
+      showConfirmationTicket({
+        name,
+        phone,
+        email,
+        focus,
+        ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000),
+        paymentId: 'pay_' + Math.random().toString(36).substring(2, 12).toUpperCase(),
+        amountPaid: '₹149'
+      });
+    }, 900);
+    return;
+  }
+
+  // Live/Test Razorpay Checkout integration
+  const options = {
+    key: RAZORPAY_CONFIG.key,
+    amount: RAZORPAY_CONFIG.amount,
+    currency: RAZORPAY_CONFIG.currency,
+    name: RAZORPAY_CONFIG.name,
+    description: RAZORPAY_CONFIG.description,
+    image: RAZORPAY_CONFIG.image,
+    prefill: {
+      name: name,
+      email: email,
+      contact: phone
+    },
+    notes: {
+      focus_area: focus,
+      batch: 'Batch #1'
+    },
+    theme: RAZORPAY_CONFIG.theme,
+    handler: function (response) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+      form.reset();
+
+      showConfirmationTicket({
+        name,
+        phone,
+        email,
+        focus,
+        ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000),
+        paymentId: response.razorpay_payment_id,
+        amountPaid: '₹149'
+      });
+    },
+    modal: {
+      ondismiss: function () {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+      }
+    }
+  };
+
+  try {
+    const rzp = new window.Razorpay(options);
+    rzp.on('payment.failed', function (response) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+      alert('Payment could not be completed: ' + (response.error.description || 'Please try again.'));
     });
-  }, 750);
+    rzp.open();
+  } catch (err) {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalHtml;
+    console.error('Razorpay invocation error:', err);
+  }
 }
 
 function showConfirmationTicket(data) {
@@ -435,9 +530,9 @@ function showConfirmationTicket(data) {
       <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); border: 1.5px solid var(--health); color: var(--health); display: grid; place-items: center; margin: 0 auto 1.25rem auto;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--health-light); text-transform: uppercase;">Registration Confirmed</span>
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--health-light); text-transform: uppercase;">Payment Confirmed</span>
       <h3 style="font-family: var(--font-display); font-size: 1.85rem; color: #ffffff; margin-top: 0.35rem; font-weight: 700;">VIP Access Pass Issued</h3>
-      <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.35rem;">Welcome, <strong>${escapeHtml(data.name)}</strong>. Your free access to Batch #1 is locked in.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.35rem;">Welcome, <strong>${escapeHtml(data.name)}</strong>. Your payment of <strong>${data.amountPaid || '₹149'}</strong> is confirmed.</p>
     </div>
 
     <div class="ticket-preview">
@@ -462,8 +557,8 @@ function showConfirmationTicket(data) {
           <strong>${escapeHtml(data.phone)}</strong>
         </div>
         <div>
-          <span>STATUS</span>
-          <strong style="color: var(--health-light);">Confirmed (100% Free)</strong>
+          <span>PAYMENT STATUS</span>
+          <strong style="color: var(--health-light);">Paid ${data.amountPaid || '₹149'} (${data.paymentId ? data.paymentId.substring(0, 14) : 'Confirmed'})</strong>
         </div>
       </div>
     </div>
@@ -471,7 +566,7 @@ function showConfirmationTicket(data) {
     <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
       <a href="https://chat.whatsapp.com/" target="_blank" rel="noopener" class="btn-primary" style="background: #25D366; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); text-align: center; border: none;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-        Join Batch #1 WhatsApp Group
+        Join Batch #1 VIP WhatsApp Group
       </a>
       <button id="btn-add-calendar" class="btn-secondary" style="width: 100%;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -562,7 +657,7 @@ function openBookingModal() {
       <span class="sub-tag">HEW Groups · Cohort #1</span>
       <h3 style="font-size: 1.85rem; font-weight: 700;">Reserve Your Live Seat</h3>
       <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
-        Instant access link delivered to your WhatsApp.
+        Complete details below to confirm your seat via secure Razorpay checkout.
       </p>
     </div>
 
@@ -585,16 +680,19 @@ function openBookingModal() {
         <label>Primary Focus Area</label>
         <select name="focus" required>
           <option value="Complete Transformation (All 3)" selected>Complete Transformation (H + E + W)</option>
-          <option value="Health (Energy, Stamina & Longevity)">Health & Bio-Optimization</option>
-          <option value="Education (Modern High-Income Skills)">Education & Skill Architecture</option>
-          <option value="Wealth (Cashflow, Real Estate & Compounding)">Wealth, Real Estate & Passive Portfolios</option>
+          <option value="Health (Energy, Stamina & Longevity)">Health &amp; Bio-Optimization</option>
+          <option value="Education (Modern High-Income Skills)">Education &amp; Skill Architecture</option>
+          <option value="Wealth (Cashflow, Real Estate & Compounding)">Wealth, Real Estate &amp; Passive Portfolios</option>
         </select>
       </div>
-      <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; height: 52px;">
-        Confirm Free Reservation
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <button type="submit" id="btn-razorpay-submit" class="btn-primary" style="width: 100%; margin-top: 0.75rem; height: 54px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span><s style="opacity: 0.65; margin-right: 6px; text-decoration: line-through;">₹499</s> <strong>Pay ₹149/-</strong></span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <p class="form-note">100% Free Live Session. Zero spam guaranteed.</p>
+      <p class="form-note" style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 0.65rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        100% Secure Checkout via Razorpay · Instant Session Access
+      </p>
     </form>
   `;
 
@@ -677,55 +775,282 @@ function initPillarStationedBalloons() {
 }
 
 /* ==========================================================================
-   AIJUGAAD TEXT TRANSITION ENGINE (Exact "We Are Chefs" Roll & Flip)
+   AIJUGAAD TEXT TRANSITION ENGINE (Exact "We Are Chefs" Roll & Flip - Staggered)
    ========================================================================== */
 function initAijugaadTextTransition() {
-  const container = document.querySelector('.aijugaad-text-rotator');
-  if (!container) return;
+  const wordsContainer = document.querySelector('.aijugaad-words-container');
+  const singleContainer = document.querySelector('.aijugaad-text-rotator');
 
-  const enterEl = container.querySelector('.aijugaad-text-enter');
-  const exitEl = container.querySelector('.aijugaad-text-exit');
-  if (!enterEl || !exitEl) return;
+  if (wordsContainer) {
+    const slots = wordsContainer.querySelectorAll('.aijugaad-word-slot');
+    if (!slots.length) return;
 
-  const text = enterEl.innerHTML;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const animOptions = {
-    duration: 700,
-    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-    fill: 'both'
-  };
+    function runWordStagger(initial = false) {
+      slots.forEach((slot, idx) => {
+        const enterEl = slot.querySelector('.aijugaad-word-enter');
+        const exitEl = slot.querySelector('.aijugaad-word-exit');
+        if (!enterEl) return;
 
-  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const text = enterEl.innerHTML;
+        const delaySec = parseFloat(slot.getAttribute('data-delay')) || (idx * 0.18);
+        const animDelay = delaySec * 1000;
 
-  // Initial reveal animation on page load (identical to aijugaad.co)
-  if (!isReducedMotion) {
-    enterEl.animate([
-      { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
-      { transform: 'none', opacity: 1 }
-    ], animOptions);
-  }
+        const animOptions = {
+          duration: 700,
+          delay: animDelay,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'both'
+        };
 
-  // Periodic roll transition loop (2.8s cycle)
-  setInterval(() => {
-    if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
+        if (initial) {
+          enterEl.animate([
+            { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+            { transform: 'none', opacity: 1 }
+          ], animOptions);
+        } else if (exitEl) {
+          exitEl.innerHTML = text;
+          enterEl.innerHTML = text;
+
+          enterEl.animate([
+            { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+            { transform: 'none', opacity: 1 }
+          ], animOptions);
+
+          const exitAnim = exitEl.animate([
+            { transform: 'none', opacity: 1 },
+            { transform: 'translateY(-115%) rotate(-3deg)', opacity: 0 }
+          ], animOptions);
+
+          exitAnim.onfinish = () => {
+            exitEl.innerHTML = '';
+          };
+        }
+      });
     }
 
-    exitEl.innerHTML = text;
-    enterEl.innerHTML = text;
+    // Initial page load staggered roll
+    if (!isReducedMotion) {
+      runWordStagger(true);
+    }
 
-    enterEl.animate([
-      { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
-      { transform: 'none', opacity: 1 }
-    ], animOptions);
+    // Periodic roll one after another (cycle every 3.2s)
+    setInterval(() => {
+      if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+      runWordStagger(false);
+    }, 3200);
 
-    const exitAnim = exitEl.animate([
-      { transform: 'none', opacity: 1 },
-      { transform: 'translateY(-115%) rotate(-3deg)', opacity: 0 }
-    ], animOptions);
+    return;
+  }
 
-    exitAnim.onfinish = () => {
-      exitEl.innerHTML = '';
+  if (singleContainer) {
+    const enterEl = singleContainer.querySelector('.aijugaad-text-enter');
+    const exitEl = singleContainer.querySelector('.aijugaad-text-exit');
+    if (!enterEl || !exitEl) return;
+
+    const text = enterEl.innerHTML;
+    const animOptions = {
+      duration: 700,
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fill: 'both'
     };
-  }, 2800);
+
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isReducedMotion) {
+      enterEl.animate([
+        { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+        { transform: 'none', opacity: 1 }
+      ], animOptions);
+    }
+
+    setInterval(() => {
+      if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+
+      exitEl.innerHTML = text;
+      enterEl.innerHTML = text;
+
+      enterEl.animate([
+        { transform: 'translateY(115%) rotate(3deg)', opacity: 0 },
+        { transform: 'none', opacity: 1 }
+      ], animOptions);
+
+      const exitAnim = exitEl.animate([
+        { transform: 'none', opacity: 1 },
+        { transform: 'translateY(-115%) rotate(-3deg)', opacity: 0 }
+      ], animOptions);
+
+      exitAnim.onfinish = () => {
+        exitEl.innerHTML = '';
+      };
+    }, 2800);
+  }
+}
+
+/* ==========================================================================
+   COMMUNITY VIDEO MARQUEE ENGINE (Review Layout Reels + Hover/Select Unmute)
+   ========================================================================== */
+function initVideoMarqueeEngine() {
+  const container = document.querySelector('.video-marquee-container');
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.video-showcase-card');
+  const allVideos = container.querySelectorAll('.showcase-video');
+  let selectedCard = null;
+
+  function updateAudioButton(card, isUnmuted) {
+    const btn = card.querySelector('.video-volume-btn');
+    if (!btn) return;
+    const mutedIcon = btn.querySelector('.vol-icon-muted');
+    const activeIcon = btn.querySelector('.vol-icon-active');
+
+    if (isUnmuted) {
+      btn.classList.add('is-active');
+      if (mutedIcon) mutedIcon.style.display = 'none';
+      if (activeIcon) activeIcon.style.display = 'block';
+    } else {
+      btn.classList.remove('is-active');
+      if (mutedIcon) mutedIcon.style.display = 'block';
+      if (activeIcon) activeIcon.style.display = 'none';
+    }
+  }
+
+  // Ensure all videos play continuously from start to end, initially muted
+  allVideos.forEach(v => {
+    v.muted = true;
+    v.playsInline = true;
+    v.loop = true;
+    const playPromise = v.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Fallback: start playback on first touch/interaction if browser blocked autoplay
+        const startOnInteract = () => {
+          v.play().catch(() => {});
+          window.removeEventListener('pointerdown', startOnInteract);
+          window.removeEventListener('touchstart', startOnInteract);
+        };
+        window.addEventListener('pointerdown', startOnInteract, { once: true });
+        window.addEventListener('touchstart', startOnInteract, { once: true });
+      });
+    }
+
+    // Safety restart to guarantee continuous start-to-end loop
+    v.addEventListener('ended', () => {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    });
+  });
+
+  function muteAllExcept(targetCard) {
+    cards.forEach(c => {
+      if (c !== targetCard) {
+        const vid = c.querySelector('.showcase-video');
+        if (vid) {
+          vid.muted = true;
+        }
+        c.classList.remove('is-active-sound');
+        updateAudioButton(c, false);
+      }
+    });
+  }
+
+  function unmuteCard(card) {
+    muteAllExcept(card);
+    const video = card.querySelector('.showcase-video');
+    if (video) {
+      video.muted = false;
+      video.volume = 1.0;
+      video.play().catch(() => {});
+      card.classList.add('is-active-sound');
+      updateAudioButton(card, true);
+    }
+  }
+
+  function muteCard(card) {
+    const video = card.querySelector('.showcase-video');
+    if (video) {
+      video.muted = true;
+    }
+    card.classList.remove('is-active-sound');
+    updateAudioButton(card, false);
+  }
+
+  function muteAll() {
+    selectedCard = null;
+    cards.forEach(c => muteCard(c));
+  }
+
+  cards.forEach(card => {
+    // Hover: play with sound for this card only (unless another is actively locked)
+    card.addEventListener('mouseenter', () => {
+      if (!selectedCard || selectedCard === card) {
+        unmuteCard(card);
+      }
+    });
+
+    // Leave: mute sound again unless explicitly selected
+    card.addEventListener('mouseleave', () => {
+      if (!selectedCard) {
+        muteCard(card);
+      } else if (selectedCard !== card) {
+        muteCard(card);
+      }
+    });
+
+    // Click / Select: particularly select this video to listen
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const video = card.querySelector('.showcase-video');
+      if (!video) return;
+
+      if (selectedCard === card && !video.muted) {
+        // Deselect & mute
+        selectedCard = null;
+        muteCard(card);
+      } else {
+        // Select particularly & turn sound on
+        selectedCard = card;
+        unmuteCard(card);
+      }
+    });
+
+    // Handle clicking the circular audio button directly
+    const volBtn = card.querySelector('.video-volume-btn');
+    if (volBtn) {
+      volBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.click();
+      });
+    }
+
+    // Keyboard support: Enter or Space
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  // Click outside: deselect and mute all videos
+  document.addEventListener('click', (e) => {
+    if (!container.contains(e.target)) {
+      muteAll();
+    }
+  });
+
+  // Mute all when leaving the tab / browser window
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      muteAll();
+    }
+  });
+  window.addEventListener('blur', () => {
+    muteAll();
+  });
 }

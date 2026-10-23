@@ -2,6 +2,12 @@
 HEW-Groups-Logo-Master-Bundle.zip
 HEW-Groups-Logo-Master-Bundle/
 
+# Reference videos & raw files
+reviewlayout/
+*_raw.mp4
+*_opt.mp4
+test_videos.html
+
 # Local backups
 *.backup.*
 *.original.*
