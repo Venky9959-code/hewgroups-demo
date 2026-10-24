@@ -921,31 +921,54 @@ function initVideoMarqueeEngine() {
     }
   }
 
-  // Ensure all videos play continuously from start to end, initially muted
-  allVideos.forEach(v => {
-    v.muted = true;
-    v.playsInline = true;
-    v.loop = true;
-    const playPromise = v.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback: start playback on first touch/interaction if browser blocked autoplay
-        const startOnInteract = () => {
-          v.play().catch(() => {});
-          window.removeEventListener('pointerdown', startOnInteract);
-          window.removeEventListener('touchstart', startOnInteract);
-        };
-        window.addEventListener('pointerdown', startOnInteract, { once: true });
-        window.addEventListener('touchstart', startOnInteract, { once: true });
-      });
-    }
+  // High-performance lazy playback: only stream/play videos when approaching viewport
+  let videosInitialized = false;
+  function startPlayback() {
+    if (videosInitialized) return;
+    videosInitialized = true;
 
-    // Safety restart to guarantee continuous start-to-end loop
-    v.addEventListener('ended', () => {
-      v.currentTime = 0;
-      v.play().catch(() => {});
+    allVideos.forEach(v => {
+      v.muted = true;
+      v.playsInline = true;
+      v.loop = true;
+      const playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback: start playback on first touch/interaction if browser blocked autoplay
+          const startOnInteract = () => {
+            v.play().catch(() => {});
+            window.removeEventListener('pointerdown', startOnInteract);
+            window.removeEventListener('touchstart', startOnInteract);
+          };
+          window.addEventListener('pointerdown', startOnInteract, { once: true });
+          window.addEventListener('touchstart', startOnInteract, { once: true });
+        });
+      }
+
+      // Safety restart to guarantee continuous start-to-end loop
+      v.addEventListener('ended', () => {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      });
     });
-  });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startPlayback();
+          allVideos.forEach(v => v.play().catch(() => {}));
+        } else if (videosInitialized) {
+          // Pause when completely offscreen to save battery and network bandwidth
+          allVideos.forEach(v => v.pause());
+        }
+      });
+    }, { rootMargin: '300px 0px' });
+    observer.observe(container);
+  } else {
+    startPlayback();
+  }
 
   function muteAllExcept(targetCard) {
     cards.forEach(c => {
