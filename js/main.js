@@ -399,10 +399,11 @@ function initRegistrationForms() {
 
 // ==========================================================================
 // RAZORPAY PAYMENT CONFIGURATION
-// Replace 'rzp_test_YOUR_KEY_HERE' with your Razorpay Key ID
+// Live Key ID: rzp_live_TrfJR9SYRcYzl0
+// (Live Secret Key: 6Aec15eOGWB8olJOAe6g4nJJ - reserved for server-side verification)
 // ==========================================================================
 const RAZORPAY_CONFIG = {
-  key: 'rzp_test_YOUR_KEY_HERE', // <-- Put your Live or Test Razorpay Key ID here
+  key: 'rzp_live_TrfJR9SYRcYzl0', // Razorpay Live Key ID
   amount: 14900, // ₹149 in paise (149 * 100)
   currency: 'INR',
   name: 'HEW Groups',
