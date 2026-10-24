@@ -8,6 +8,9 @@ reviewlayout/
 *_opt.mp4
 test_videos.html
 
+# Local videos (hosted on Cloudinary)
+testimomonials/
+
 # Local backups
 *.backup.*
 *.original.*
