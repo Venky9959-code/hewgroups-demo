@@ -399,11 +399,11 @@ function initRegistrationForms() {
 
 // ==========================================================================
 // RAZORPAY PAYMENT CONFIGURATION
-// Live Key ID: rzp_live_TrfJR9SYRcYzl0
-// (Live Secret Key: 6Aec15eOGWB8olJOAe6g4nJJ - reserved for server-side verification)
+// Live Key ID: rzp_live_TrmHqpHyg2ZHZJ
+// (Live Secret Key: u4usNRIV0EZpUAIYRHEriNXm - reserved for server-side verification)
 // ==========================================================================
 const RAZORPAY_CONFIG = {
-  key: 'rzp_live_TrfJR9SYRcYzl0', // Razorpay Live Key ID
+  key: 'rzp_live_TrmHqpHyg2ZHZJ', // Razorpay Live Key ID
   amount: 14900, // ₹149 in paise (149 * 100)
   currency: 'INR',
   name: 'HEW Groups',
@@ -521,28 +521,41 @@ async function handleFormSubmission(form) {
 }
 
 function showConfirmationTicket(data) {
-  const modal = document.getElementById('booking-modal');
-  const modalBody = document.getElementById('modal-body-content');
+  const modal = document.getElementById('booking-modal') || document.getElementById('bookingModal');
+  if (!modal) return;
 
-  if (!modal || !modalBody) return;
+  let modalBody = document.getElementById('modal-body-content');
+  if (!modalBody) {
+    const container = modal.querySelector('.modal-container') || modal.querySelector('.modal-content');
+    if (container) {
+      modalBody = container.querySelector('#modal-body-content');
+      if (!modalBody) {
+        modalBody = document.createElement('div');
+        modalBody.id = 'modal-body-content';
+        container.appendChild(modalBody);
+      }
+    }
+  }
+
+  if (!modalBody) return;
 
   modalBody.innerHTML = `
     <div style="text-align: center;">
-      <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); border: 1.5px solid var(--health); color: var(--health); display: grid; place-items: center; margin: 0 auto 1.25rem auto;">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(9, 100, 16, 0.12); border: 1.5px solid var(--health); color: var(--health); display: grid; place-items: center; margin: 0 auto 1.25rem auto;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--health-light); text-transform: uppercase;">Payment Confirmed</span>
-      <h3 style="font-family: var(--font-display); font-size: 1.85rem; color: #ffffff; margin-top: 0.35rem; font-weight: 700;">VIP Access Pass Issued</h3>
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--health); text-transform: uppercase;">Payment Confirmed</span>
+      <h3 style="font-family: var(--font-heading); font-size: 1.85rem; color: var(--text-main); margin-top: 0.35rem; font-weight: 700;">VIP Access Pass Issued</h3>
       <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.35rem;">Welcome, <strong>${escapeHtml(data.name)}</strong>. Your payment of <strong>${data.amountPaid || '₹149'}</strong> is confirmed.</p>
     </div>
 
     <div class="ticket-preview">
       <div class="ticket-header">
         <div>
-          <strong style="color: #ffffff; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.02em;">HEW Groups · Cohort #1</strong>
+          <strong style="color: var(--text-main); font-family: var(--font-heading); font-size: 1.05rem; letter-spacing: 0.02em;">HEW Groups · Cohort #1</strong>
           <span style="display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 2px;">Lead Coach: Sreenivas Paturi</span>
         </div>
-        <div class="ticket-id">${data.ticketId}</div>
+        <div class="ticket-id" style="color: var(--primary);">${data.ticketId}</div>
       </div>
       <div class="ticket-detail-row">
         <div>
@@ -559,7 +572,8 @@ function showConfirmationTicket(data) {
         </div>
         <div>
           <span>PAYMENT STATUS</span>
-          <strong style="color: var(--health-light);">Paid ${data.amountPaid || '₹149'} (${data.paymentId ? data.paymentId.substring(0, 14) : 'Confirmed'})</strong>
+          <strong style="color: var(--health);">Paid ${data.amountPaid || '₹149'}</strong>
+          <span style="display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; word-break: break-all;">Ref: ${escapeHtml(data.paymentId || 'Confirmed')}</span>
         </div>
       </div>
     </div>
