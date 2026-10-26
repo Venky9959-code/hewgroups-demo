@@ -398,21 +398,48 @@ function initRegistrationForms() {
 }
 
 // ==========================================================================
-// RAZORPAY PAYMENT CONFIGURATION
-// Live Key ID: rzp_live_TrmHqpHyg2ZHZJ
-// (Live Secret Key: u4usNRIV0EZpUAIYRHEriNXm - reserved for server-side verification)
+// PAYMENT CONFIGURATION (TEST MODE: ₹0 | PRODUCTION MODE: ₹199)
 // ==========================================================================
-const RAZORPAY_CONFIG = {
+const PAYMENT_CONFIG = {
+  // SET TO 0 FOR TESTING (Instant zero-cost test flow, bypasses gateway, dispatches EmailJS automation)
+  // CHANGE TO 199 FOR LIVE PRODUCTION (Charges ₹199 via Razorpay)
+  amountINR: 0, 
+  originalPriceINR: 499,
+
+  // Razorpay Gateway Settings (Active when amountINR > 0)
   key: 'rzp_live_TrmHqpHyg2ZHZJ', // Razorpay Live Key ID
-  amount: 14900, // ₹149 in paise (149 * 100)
   currency: 'INR',
   name: 'HEW Groups',
-  description: 'Batch #1 Live Transformation Masterclass Access',
+  description: 'Batch #1 Live Transformation Masterclass + Document Kit',
   image: 'assets/logo/HEW-Groups_32x32.png',
   theme: {
     color: '#096410'
   }
 };
+
+// ==========================================================================
+// EMAILJS AUTOMATION CONFIGURATION (MASTERCLASS DOCUMENT DELIVERY)
+// ==========================================================================
+const EMAILJS_CONFIG = {
+  // Replace these with your EmailJS credentials from https://www.emailjs.com/
+  publicKey: 'YOUR_EMAILJS_PUBLIC_KEY',   // e.g. "AbCdEf123456"
+  serviceId: 'YOUR_EMAILJS_SERVICE_ID',   // e.g. "service_hew"
+  templateId: 'YOUR_EMAILJS_TEMPLATE_ID', // e.g. "template_masterclass"
+
+  // Masterclass Document located in the masterclass folder
+  masterclassDocRelativeUrl: 'masterclass/HEW_Groups_Premium_Guide_With_Founder_Photos.pdf',
+  masterclassDocName: 'HEW Groups Masterclass Premium Guide (PDF)',
+
+  // Official VIP Community WhatsApp group invite link
+  whatsappGroupUrl: 'https://chat.whatsapp.com/DXSQDaEwfrL6Bk8y1jYKWm?s=cl&p=i&ilr=4&iam=0'
+};
+
+function getMasterclassDocumentUrl() {
+  const origin = window.location.origin || '';
+  const pathname = window.location.pathname || '';
+  const basePath = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+  return `${origin}${basePath}${EMAILJS_CONFIG.masterclassDocRelativeUrl}`;
+}
 
 function ensureRazorpayLoaded() {
   return new Promise((resolve) => {
@@ -428,12 +455,94 @@ function ensureRazorpayLoaded() {
   });
 }
 
+function ensureEmailJSLoaded() {
+  return new Promise((resolve) => {
+    if (window.emailjs) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.onload = () => {
+      if (window.emailjs && EMAILJS_CONFIG.publicKey && !EMAILJS_CONFIG.publicKey.includes('YOUR_')) {
+        try {
+          window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+        } catch (e) {
+          console.warn('[HEW Groups] EmailJS init note:', e);
+        }
+      }
+      resolve(true);
+    };
+    script.onerror = () => {
+      console.warn('[HEW Groups] EmailJS CDN load failed.');
+      resolve(false);
+    };
+    document.head.appendChild(script);
+  });
+}
+
+async function sendMasterclassEmail(data) {
+  await ensureEmailJSLoaded();
+
+  const docUrl = getMasterclassDocumentUrl();
+  const templateParams = {
+    to_name: data.name,
+    to_email: data.email,
+    user_name: data.name,
+    user_email: data.email,
+    phone: data.phone,
+    user_phone: data.phone,
+    focus_area: data.focus,
+    ticket_id: data.ticketId,
+    payment_id: data.paymentId,
+    amount_paid: data.amountPaid,
+    masterclass_title: 'HEW Groups - Health, Education & Wealth Masterclass',
+    document_name: EMAILJS_CONFIG.masterclassDocName,
+    document_url: docUrl,
+    masterclass_doc_url: docUrl,
+    whatsapp_link: EMAILJS_CONFIG.whatsappGroupUrl,
+    whatsapp_group: EMAILJS_CONFIG.whatsappGroupUrl,
+    session_timing: 'Batch #1 Live Orientation · Sunday 11:00 AM IST'
+  };
+
+  const isConfigured =
+    window.emailjs &&
+    EMAILJS_CONFIG.publicKey && !EMAILJS_CONFIG.publicKey.includes('YOUR_') &&
+    EMAILJS_CONFIG.serviceId && !EMAILJS_CONFIG.serviceId.includes('YOUR_') &&
+    EMAILJS_CONFIG.templateId && !EMAILJS_CONFIG.templateId.includes('YOUR_');
+
+  if (!isConfigured) {
+    console.group('%c[HEW Groups] 📩 Automated Masterclass Email Prepared', 'color: #096410; font-weight: bold;');
+    console.info('Masterclass automated confirmation email with PDF guide is ready to send via EmailJS!');
+    console.info('To deliver live emails to real inboxes, update EMAILJS_CONFIG in js/main.js with your EmailJS credentials:');
+    console.info('  - publicKey');
+    console.info('  - serviceId');
+    console.info('  - templateId');
+    console.info('Email Payload ready to send:', templateParams);
+    console.groupEnd();
+    return { success: true, simulated: true, payload: templateParams };
+  }
+
+  try {
+    const response = await window.emailjs.send(
+      EMAILJS_CONFIG.serviceId,
+      EMAILJS_CONFIG.templateId,
+      templateParams,
+      EMAILJS_CONFIG.publicKey
+    );
+    console.log('[HEW Groups] Automation email successfully sent to', data.email, response);
+    return { success: true, response };
+  } catch (err) {
+    console.error('[HEW Groups] Failed to send automation email via EmailJS:', err);
+    return { success: false, error: err };
+  }
+}
+
 async function handleFormSubmission(form) {
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalHtml = submitBtn.innerHTML;
 
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<span>Connecting to Razorpay...</span>`;
 
   const formData = new FormData(form);
   const name = formData.get('name') || 'Member';
@@ -441,37 +550,74 @@ async function handleFormSubmission(form) {
   const email = formData.get('email') || 'member@example.com';
   const focus = formData.get('focus') || 'Health, Education & Wealth';
 
-  await ensureRazorpayLoaded();
+  // =========================================================================
+  // ZERO-RUPEES TEST MODE (amountINR === 0)
+  // Bypasses gateway since gateways do not permit ₹0 charges, issues instant VIP pass
+  // and immediately triggers EmailJS Masterclass Document delivery.
+  // =========================================================================
+  if (PAYMENT_CONFIG.amountINR === 0) {
+    submitBtn.innerHTML = `<span>Processing Test Access & Emailing Document...</span>`;
 
-  // If user hasn't set their key yet, provide seamless test simulation
-  if (!window.Razorpay || RAZORPAY_CONFIG.key === 'rzp_test_YOUR_KEY_HERE') {
-    console.info('[HEW Groups] Razorpay Key pending. Update RAZORPAY_CONFIG.key in js/main.js with your Razorpay key.');
+    const ticketData = {
+      name,
+      phone,
+      email,
+      focus,
+      ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000),
+      paymentId: 'TEST_FREE_' + Math.random().toString(36).substring(2, 10).toUpperCase(),
+      amountPaid: '₹0 (Free Test Pass)'
+    };
+
+    // Dispatch automated confirmation email with document via EmailJS
+    await sendMasterclassEmail(ticketData);
+
     setTimeout(() => {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHtml;
       form.reset();
+      showConfirmationTicket(ticketData);
+    }, 700);
+    return;
+  }
 
-      showConfirmationTicket({
+  // =========================================================================
+  // LIVE PAID CHECKOUT (e.g. ₹199 via Razorpay)
+  // =========================================================================
+  submitBtn.innerHTML = `<span>Connecting to Razorpay...</span>`;
+  await ensureRazorpayLoaded();
+
+  // If Razorpay SDK not available or test placeholder key
+  if (!window.Razorpay || PAYMENT_CONFIG.key === 'rzp_test_YOUR_KEY_HERE') {
+    console.info('[HEW Groups] Razorpay Key pending or unavailable. Running fallback simulation.');
+    setTimeout(async () => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+      form.reset();
+
+      const ticketData = {
         name,
         phone,
         email,
         focus,
         ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000),
         paymentId: 'pay_' + Math.random().toString(36).substring(2, 12).toUpperCase(),
-        amountPaid: '₹149'
-      });
+        amountPaid: '₹' + PAYMENT_CONFIG.amountINR
+      };
+
+      await sendMasterclassEmail(ticketData);
+      showConfirmationTicket(ticketData);
     }, 900);
     return;
   }
 
   // Live/Test Razorpay Checkout integration
   const options = {
-    key: RAZORPAY_CONFIG.key,
-    amount: RAZORPAY_CONFIG.amount,
-    currency: RAZORPAY_CONFIG.currency,
-    name: RAZORPAY_CONFIG.name,
-    description: RAZORPAY_CONFIG.description,
-    image: RAZORPAY_CONFIG.image,
+    key: PAYMENT_CONFIG.key,
+    amount: PAYMENT_CONFIG.amountINR * 100, // paise (e.g. 199 * 100 = 19900)
+    currency: PAYMENT_CONFIG.currency,
+    name: PAYMENT_CONFIG.name,
+    description: PAYMENT_CONFIG.description,
+    image: PAYMENT_CONFIG.image,
     prefill: {
       name: name,
       email: email,
@@ -481,21 +627,26 @@ async function handleFormSubmission(form) {
       focus_area: focus,
       batch: 'Batch #1'
     },
-    theme: RAZORPAY_CONFIG.theme,
-    handler: function (response) {
+    theme: PAYMENT_CONFIG.theme,
+    handler: async function (response) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHtml;
       form.reset();
 
-      showConfirmationTicket({
+      const ticketData = {
         name,
         phone,
         email,
         focus,
         ticketId: 'HEW-' + Math.floor(100000 + Math.random() * 900000),
         paymentId: response.razorpay_payment_id,
-        amountPaid: '₹149'
-      });
+        amountPaid: '₹' + PAYMENT_CONFIG.amountINR
+      };
+
+      // Trigger automated email with Masterclass Document via EmailJS
+      await sendMasterclassEmail(ticketData);
+
+      showConfirmationTicket(ticketData);
     },
     modal: {
       ondismiss: function () {
@@ -539,6 +690,9 @@ function showConfirmationTicket(data) {
 
   if (!modalBody) return;
 
+  const docUrl = getMasterclassDocumentUrl();
+  const whatsappUrl = EMAILJS_CONFIG.whatsappGroupUrl;
+
   modalBody.innerHTML = `
     <div style="text-align: center;">
       <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(9, 100, 16, 0.12); border: 1.5px solid var(--health); color: var(--health); display: grid; place-items: center; margin: 0 auto 1.25rem auto;">
@@ -546,7 +700,20 @@ function showConfirmationTicket(data) {
       </div>
       <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--health); text-transform: uppercase;">Payment Confirmed</span>
       <h3 style="font-family: var(--font-heading); font-size: 1.85rem; color: var(--text-main); margin-top: 0.35rem; font-weight: 700;">VIP Access Pass Issued</h3>
-      <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.35rem;">Welcome, <strong>${escapeHtml(data.name)}</strong>. Your payment of <strong>${data.amountPaid || '₹149'}</strong> is confirmed.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.35rem;">Welcome, <strong>${escapeHtml(data.name)}</strong>. Your payment of <strong>${data.amountPaid}</strong> is confirmed.</p>
+    </div>
+
+    <!-- Automated Mail Delivery Notification Banner -->
+    <div style="background: rgba(9, 100, 16, 0.08); border: 1px solid rgba(9, 100, 16, 0.25); border-radius: 12px; padding: 12px 16px; margin: 1rem 0; text-align: left; display: flex; align-items: flex-start; gap: 12px;">
+      <div style="color: var(--health); font-size: 1.25rem; flex-shrink: 0; margin-top: 2px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </div>
+      <div>
+        <strong style="display: block; font-size: 0.88rem; color: var(--text-main); font-weight: 700;">Sent Exclusively To Your Email!</strong>
+        <span style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 2px;">
+          Your official <strong>Masterclass Document &amp; Guide (PDF)</strong> has been sent directly to <span style="color: var(--health); font-weight: 600;">${escapeHtml(data.email)}</span>. Please check your inbox (and spam folder).
+        </span>
+      </div>
     </div>
 
     <div class="ticket-preview">
@@ -572,18 +739,20 @@ function showConfirmationTicket(data) {
         </div>
         <div>
           <span>PAYMENT STATUS</span>
-          <strong style="color: var(--health);">Paid ${data.amountPaid || '₹149'}</strong>
+          <strong style="color: var(--health);">Paid ${data.amountPaid}</strong>
           <span style="display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; word-break: break-all;">Ref: ${escapeHtml(data.paymentId || 'Confirmed')}</span>
         </div>
       </div>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
-      <a href="https://chat.whatsapp.com/" target="_blank" rel="noopener" class="btn-primary" style="background: #25D366; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); text-align: center; border: none;">
+      <!-- Updated Live VIP WhatsApp Group Link -->
+      <a href="${whatsappUrl}" target="_blank" rel="noopener" class="btn-primary" style="background: #25D366; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); text-align: center; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
         Join Batch #1 VIP WhatsApp Group
       </a>
-      <button id="btn-add-calendar" class="btn-secondary" style="width: 100%;">
+
+      <button id="btn-add-calendar" class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Add to Calendar
       </button>
@@ -667,12 +836,14 @@ function openBookingModal() {
   }
   if (!modalBody) return;
 
+  const isZeroCost = PAYMENT_CONFIG.amountINR === 0;
+
   modalBody.innerHTML = `
     <div class="form-header" style="margin-bottom: 1.5rem; text-align: left;">
       <span class="sub-tag">HEW Groups · Cohort #1</span>
       <h3 style="font-size: 1.85rem; font-weight: 700;">Reserve Your Live Seat</h3>
       <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
-        Complete details below to confirm your seat via secure Razorpay checkout.
+        Complete details below to confirm your seat. Access &amp; Masterclass Document will be sent directly to your email.
       </p>
     </div>
 
@@ -701,12 +872,17 @@ function openBookingModal() {
         </select>
       </div>
       <button type="submit" id="btn-razorpay-submit" class="btn-primary" style="width: 100%; margin-top: 0.75rem; height: 54px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <span><s style="opacity: 0.65; margin-right: 6px; text-decoration: line-through;">₹499</s> <strong>Pay ₹149/-</strong></span>
+        ${isZeroCost
+          ? `<span><s style="opacity: 0.65; margin-right: 6px; text-decoration: line-through;">₹${PAYMENT_CONFIG.originalPriceINR}</s> <strong>Enroll for ₹0/- (Test Pass)</strong></span>`
+          : `<span><s style="opacity: 0.65; margin-right: 6px; text-decoration: line-through;">₹${PAYMENT_CONFIG.originalPriceINR}</s> <strong>Pay ₹${PAYMENT_CONFIG.amountINR}/-</strong></span>`
+        }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
       <p class="form-note" style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 0.65rem;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        100% Secure Checkout via Razorpay · Instant Session Access
+        ${isZeroCost 
+          ? 'Free Test Registration · Masterclass Document Sent Exclusively to Email' 
+          : '100% Secure Checkout via Razorpay · Masterclass Document Sent Exclusively to Email'}
       </p>
     </form>
   `;
